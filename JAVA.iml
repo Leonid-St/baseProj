@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="fasterxml.jackson.core.databind" level="project" />
+    <orderEntry type="library" name="java.awt" level="project" />
     <orderEntry type="library" name="fasterxml.uuid.java.generator" level="project" />
   </component>
 </module>

@@ -1,5 +1,6 @@
 package Utils;
 
+import desktop.view.MainWindow;
 import exceptions.AlreadyDeadException;
 import exceptions.WeightException;
 import exceptions.WrongFoodException;
@@ -14,11 +15,20 @@ import java.util.Objects;
 public class UserServices {
     Storage storage;
     ArrString libraryServices;
+    MainWindow mainWindow ;
 
-    public UserServices(Storage storage) {
-        this.storage = storage;
+
+
+
+    public UserServices() {
+        this.storage = new Storage();
+        this.storage.readLibraryFileToStorage();
         this.libraryServices = storage.getLibraryEntity();
+    }
 
+
+    public void createMainWindow(){
+        this.mainWindow=  new MainWindow(this);
     }
 
     public void lazyCreate(int num) throws IOException, WeightException {
@@ -51,18 +61,18 @@ public class UserServices {
     }
 
     //
-    public void CreatePredator(String id, String name, Double weight) throws WeightException {
-        this.storage.Create(new Predator(id, name, weight));
+    public void CreatePredator( String name, Double weight) throws WeightException {
+        this.storage.Create(new Predator(java.util.UUID.randomUUID().toString(), name, weight));
 
     }
 
-    public void CreateHerbivore(String id, String name, Double weight) throws WeightException {
-        this.storage.Create(new Herbivore(id, name, weight));
+    public void CreateHerbivore( String name, Double weight) throws WeightException {
+        this.storage.Create(new Herbivore(java.util.UUID.randomUUID().toString(), name, weight));
 
     }
 
-    public void CreateGrass(String id, String name, Double weight) throws WeightException {
-        this.storage.Create(new Grass(id, name, weight));
+    public void CreateGrass( String name, Double weight) throws WeightException {
+        this.storage.Create(new Grass(java.util.UUID.randomUUID().toString(), name, weight));
 
     }
 
@@ -76,6 +86,56 @@ public class UserServices {
 
     public ArrayList<Grass> getGrasses() {
         return this.storage.getStorage().Grasses;
+    }
+
+    public Predator getPredatorById(String id){
+        ArrayList<Predator> list = this.getPredators();
+        for(int i =0;i<list.toArray().length;i++){
+            if(Objects.equals(list.get(i).getId(), id)){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+    public Herbivore getHerbivoreById(String id){
+        ArrayList<Herbivore> list = this.getHerbivores();
+        for(int i =0;i<list.toArray().length;i++){
+            if(Objects.equals(list.get(i).getId(), id)){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Grass getGrassById(String id){
+        ArrayList<Grass> list = this.getGrasses();
+        for(int i =0;i<list.toArray().length;i++){
+            if(Objects.equals(list.get(i).getId(), id)){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Entity getByID (String id){
+
+        for (int i = 0; i < this.storage.getStorage().Predators.toArray().length; i++)
+            if (Objects.equals(this.storage.getStorage().Predators.get(i).getId(), id))
+                return this.storage.getStorage().Predators.get(i);
+
+        for (int i = 0; i < this.storage.getStorage().Herbivores.toArray().length; i++)
+            if (Objects.equals(this.storage.getStorage().Herbivores.get(i).getId(), id))
+                return this.storage.getStorage().Herbivores.get(i);
+
+        for (int i = 0; i < this.storage.getStorage().Grasses.toArray().length; i++)
+            if (Objects.equals(this.storage.getStorage().Grasses.get(i).getId(), id))
+                return this.storage.getStorage().Grasses.get(i);
+        /*
+        var tmpStor= storage.toArray();
+        for(int i=0;i<storage.toArray().length;i++){
+            if(Objects.equals(storage.get(i).getId(), id))return storage.get(i);
+        }*/
+        return null;
     }
 
     public void infoPredators() {
@@ -93,9 +153,9 @@ public class UserServices {
     }
 
     public void infoGrasses() {
-        System.out.println("Predators>>>:");
-        for (int i = 0; i < this.storage.getStorage().Predators.toArray().length; i++) {
-            System.out.println(this.storage.getStorage().Predators.get(i).info());
+        System.out.println("Grasses>>>:");
+        for (int i = 0; i < this.storage.getStorage().Grasses.toArray().length; i++) {
+            System.out.println(this.storage.getStorage().Grasses.get(i).info());
         }
     }
 
